@@ -24,13 +24,15 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundImage: "url(https://source.unsplash.com/random)",
     //backgroundColor : 'black',
+    //backgroundRepeat: "no-repeat",
+    //backgroundSize: 'auto',
     height: "100vh",
     alignItems: "center",
     justifyContent: "center"
   },
   image: {
     backgroundImage: "url(https://source.unsplash.com/random)",
-    backgroundRepeat: "no-repeat",
+    //backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
         ? theme.palette.grey[50]
@@ -63,6 +65,7 @@ export default function Sign({match}) {
   const classes = useStyles();
   const history=useHistory();
   const [res,setRes]=useState({})
+  const [noUser,setNoUser] = useState(false);
    useEffect(()=>{
     if(!match.params.id){
       history.push('/create')
@@ -75,6 +78,7 @@ export default function Sign({match}) {
       })
       .catch((err)=>{
         console.log(err);
+        setNoUser(true)
       })
     }
 
@@ -82,7 +86,9 @@ export default function Sign({match}) {
 
   
   return (
-    <Grid container component="main" className={classes.root}>
+    <div>
+    {res.pathname!=undefined&&
+      <Grid container component="main" className={classes.root}>
       <CssBaseline />
       
       <Grid item xs={6} sm={6} md={6} component={Paper} elevation={6} square>
@@ -104,10 +110,24 @@ export default function Sign({match}) {
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paper}>Gender: {res.gender}</Paper>
         </Grid>
-        
       </Grid>
         </div>
       </Grid>
-    </Grid>
+    </Grid>}
+     {noUser &&
+      <Grid container component="main" className={classes.root}>
+        <CssBaseline />
+      
+      <Grid item xs={6} sm={6} md={6} component={Paper} elevation={6} square>
+        <div className={classes.paper}>
+        <Typography component="h1" variant="h5">
+            User Details
+          </Typography>
+        <h1>No user with the given username found</h1>
+        </div>
+        </Grid>
+      </Grid>}
+    
+    </div>
   );
 }

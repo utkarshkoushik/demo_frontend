@@ -20,9 +20,12 @@ function App() {
                 <Route exact path="/create">
                     <Home />
                 </Route>
-                <Route path='/:id' render={(props) => {
+                {/* <Route exact path='/'><UserProfile /></Route> */}
+                <Route exact path="/:id" component={UserProfile} />
+               < Route exact path="/" component={UserProfile} />
+                {/* <Route path='/:id' render={(props) => {
                     return ( <UserProfile {...props } /> )
-                }}/>
+                }}/> */}
                 {/* <Route>
                     <NotFound />
                 </Route> */}

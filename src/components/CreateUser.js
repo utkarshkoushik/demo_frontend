@@ -1,4 +1,5 @@
 import React, {useState,useEffect} from "react";
+import { useHistory } from 'react-router-dom';
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -53,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignInSide() {
   const classes = useStyles();
+  const history=useHistory();
   const [firstName,setFirstName] = useState({
     value: "",
     error : false,
@@ -144,9 +146,28 @@ console.log(gender)
     formData.append('age',age.value);
     formData.append('gender',gender.value);
     formData.append('photo',photo,photo.name);
-    axios.post('http://localhost:8000/api/userData',formData)
+    axios.post('http://13.233.193.134:8000/api/userData',formData)
     .then((res)=>{
       console.log(res);
+      if(res.data.msg1=="Username already taken"){
+        setUserName({
+          value : userName.value,
+          error : true,
+          helperText : "Username already taken"
+        })
+      }
+      if(res.data.msg2=="Email already exists"){
+        setEmail({
+          value : email.value,
+          error : true,
+          helperText : "Email already exists"
+        })
+      }
+      if(res.status==201){
+        const id ='/'+ res.data.pathname;
+        history.push(id);
+      }
+      
     })
     .catch((err)=>{
       console.log(err);

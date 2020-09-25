@@ -75,7 +75,7 @@ export default function Sign({ match }) {
 
           <Grid
             item
-            xs={6}
+            xs={12}
             sm={6}
             md={6}
             component={Paper}

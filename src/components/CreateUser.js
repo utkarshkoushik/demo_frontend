@@ -1,5 +1,5 @@
-import React, {useState,useEffect} from "react";
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -14,10 +14,9 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import axios from 'axios'
+import axios from "axios";
 
-
-const options = ['Male', 'Female'];
+const options = ["Male", "Female"];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
   image: {
     backgroundImage: "url(https://source.unsplash.com/random)",
-    backgroundSize: '100%',
+    backgroundSize: "100%",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -52,188 +51,208 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   input: {
-    display: 'none',
+    display: "none",
   },
 }));
 
 export default function SignInSide() {
   const classes = useStyles();
-  const history=useHistory();
-  const [firstName,setFirstName] = useState({
+  const history = useHistory();
+  const [firstName, setFirstName] = useState({
     value: "",
-    error : false,
-    helperText : "" 
-  })
-  const [lastName,setLastName] = useState({
+    error: false,
+    helperText: "",
+  });
+  const [lastName, setLastName] = useState({
     value: "",
-    error : false,
-    helperText : "" 
-  })
-  const [userName,setUserName] = useState({
+    error: false,
+    helperText: "",
+  });
+  const [userName, setUserName] = useState({
     value: "",
-    error : false,
-    helperText : "" 
-  })
-  const [email,setEmail] = useState({
+    error: false,
+    helperText: "",
+  });
+  const [email, setEmail] = useState({
     value: "",
-    error : false,
-    helperText : "" 
-  })
-  const [age,setAge] = useState({
+    error: false,
+    helperText: "",
+  });
+  const [age, setAge] = useState({
     value: "",
-    error : false,
-    helperText : "" 
-  })
-  const [gender,setGender] = useState({
+    error: false,
+    helperText: "",
+  });
+  const [gender, setGender] = useState({
     value: "",
-    error : false,
-    helperText : "" 
-  })
-  const [photo,setPhoto] =useState(null); 
-  useEffect(()=>{
-console.log(gender)
-  },[gender])
-  
-  const handleFirstName =(event)=>{
+    error: false,
+    helperText: "",
+  });
+  const [photo, setPhoto] = useState(null);
+  const [pError, setPError] = useState({
+    error: false,
+    helperText: "",
+  });
+  useEffect(() => {
+    console.log(gender);
+  }, [gender]);
+
+  const handleFirstName = (event) => {
     setFirstName({
-      value : event.target.value,
-      error : false,
-      helperText : ""
-    })
-  }
-  const handleLastName =(event)=>{
+      value: event.target.value,
+      error: false,
+      helperText: "",
+    });
+  };
+  const handleLastName = (event) => {
     setLastName({
-      value : event.target.value,
-      error : false,
-      helperText : ""
-    })
-  }
-  const handleUserName =(event)=>{
+      value: event.target.value,
+      error: false,
+      helperText: "",
+    });
+  };
+  const handleUserName = (event) => {
     setUserName({
-      value : event.target.value,
-      error : false,
-      helperText : ""
-    })
-  }
-  const handleEmail =(event)=>{
+      value: event.target.value,
+      error: false,
+      helperText: "",
+    });
+  };
+  const handleEmail = (event) => {
     setEmail({
-      value : event.target.value,
-      error : false,
-      helperText : ""
-    })
-  }
-  const handleAge =(event)=>{
+      value: event.target.value,
+      error: false,
+      helperText: "",
+    });
+  };
+  const handleAge = (event) => {
     setAge({
-      value : event.target.value,
-      error : false,
-      helperText : ""
-    })
-  }
-  const handleGender =(event)=>{
+      value: event.target.value,
+      error: false,
+      helperText: "",
+    });
+  };
+  const handleGender = (event) => {
     setGender({
-      value : event.target.value,
-      error : false,
-      helperText : ""
-    })
-  }
+      value: event.target.value,
+      error: false,
+      helperText: "",
+    });
+  };
 
-  const onFileChange=(event)=>{
+  const onFileChange = (event) => {
     setPhoto(event.target.files[0]);
-  }
-  
-  const callApi=()=>{
-  
-    const formData = new FormData();
-    formData.append('name',firstName.value+lastName.value);
-    formData.append('pathname',userName.value);
-    formData.append('email',email.value);
-    formData.append('age',age.value);
-    formData.append('gender',gender.value);
-    formData.append('photo',photo,photo.name);
-    axios.post('http://13.233.193.134:8000/api/userData',formData)
-    .then((res)=>{
-      console.log(res);
-      if(res.data.msg1=="Username already taken"){
-        setUserName({
-          value : userName.value,
-          error : true,
-          helperText : "Username already taken"
-        })
-      }
-      if(res.data.msg2=="Email already exists"){
-        setEmail({
-          value : email.value,
-          error : true,
-          helperText : "Email already exists"
-        })
-      }
-      if(res.status==201){
-        const id ='/'+ res.data.pathname;
-        history.push(id);
-      }
-      
-    })
-    .catch((err)=>{
-      console.log(err);
-    })
-  }
+    setPError({
+      error: false,
+      helperText: "",
+    });
+  };
 
-  const handleSubmit =(e)=>{
-    e.preventDefault()
-    if(!firstName.value){
+  const callApi = () => {
+    const formData = new FormData();
+    formData.append("name", firstName.value + lastName.value);
+    formData.append("pathname", userName.value);
+    formData.append("email", email.value);
+    formData.append("age", age.value);
+    formData.append("gender", gender.value);
+    formData.append("photo", photo, photo.name);
+    axios
+      .post("http://13.233.193.134:8000/api/userData", formData)
+      .then((res) => {
+        console.log(res);
+        if (res.data.msg1 == "Username already taken") {
+          setUserName({
+            value: userName.value,
+            error: true,
+            helperText: "Username already taken",
+          });
+        }
+        if (res.data.msg2 == "Email already exists") {
+          setEmail({
+            value: email.value,
+            error: true,
+            helperText: "Email already exists",
+          });
+        }
+        if (res.status == 201) {
+          const id = "/" + res.data.pathname;
+          history.push(id);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!firstName.value) {
       setFirstName({
-        value : firstName.value,
-        error : true,
-        helperText : "First name cannot be left blank"
-      })
+        value: firstName.value,
+        error: true,
+        helperText: "First name cannot be left blank",
+      });
     }
-    if(!lastName.value){
+    if (!lastName.value) {
       setLastName({
-        value : lastName.value,
-        error : true,
-        helperText : "Last name cannot be left blank"
-      })
+        value: lastName.value,
+        error: true,
+        helperText: "Last name cannot be left blank",
+      });
     }
-    if(!userName.value){
+    if (!userName.value) {
       setUserName({
-        value : userName.value,
-        error : true,
-        helperText : "Username cannot be left blank"
-      })
+        value: userName.value,
+        error: true,
+        helperText: "Username cannot be left blank",
+      });
     }
-    if(!email.value){
+    if (!email.value) {
       setEmail({
-        value : email.value,
-        error : true,
-        helperText : "Email cannot be left blank"
-      })
+        value: email.value,
+        error: true,
+        helperText: "Email cannot be left blank",
+      });
     }
-    if(!age.value){
+    if (!age.value) {
       setAge({
-        value : age.value,
-        error : true,
-        helperText : "Age cannot be left blank"
-      })
-    }
-    else if(age.value<=0){
+        value: age.value,
+        error: true,
+        helperText: "Age cannot be left blank",
+      });
+    } else if (age.value <= 0) {
       setAge({
-        value : age.value,
-        error : true,
-        helperText : "Enter a valid age"
-      })
+        value: age.value,
+        error: true,
+        helperText: "Enter a valid age",
+      });
     }
-    if(!gender.value){
+    if (!gender.value) {
       setGender({
-        value : gender.value,
-        error : true,
-        helperText : "Gender cannot be left blank"
-      })
+        value: gender.value,
+        error: true,
+        helperText: "Gender cannot be left blank",
+      });
     }
-    if(gender.value && age.value && age.value>0 && email.value && userName.value && lastName.value && firstName.value){
+    if (!photo) {
+      setPError({
+        error: true,
+        helperText: "Upload a photo",
+      });
+    }
+    if (
+      gender.value &&
+      age.value &&
+      age.value > 0 &&
+      email.value &&
+      userName.value &&
+      lastName.value &&
+      firstName.value &&
+      photo
+    ) {
       callApi();
     }
-
-  }
+  };
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -291,7 +310,7 @@ console.log(gender)
               label="Username (must be unique)"
               type="Username"
               id="Username"
-              onChange = {handleUserName}
+              onChange={handleUserName}
               autoComplete="Username"
               helperText={userName.helperText}
             />
@@ -330,35 +349,45 @@ console.log(gender)
                   id="Gender"
                   onChange={(event, newValue) => {
                     setGender({
-                      value : newValue,
-                      error : false,
-                      helperText : ""
-                    })
+                      value: newValue,
+                      error: false,
+                      helperText: "",
+                    });
                   }}
                   options={options}
                   style={{ width: 250, marginTop: 15 }}
                   renderInput={(params) => (
-                    <TextField  {...params} error={gender.error} helperText={gender.helperText} label="Gender" variant="outlined"  />
+                    <TextField
+                      {...params}
+                      error={gender.error}
+                      helperText={gender.helperText}
+                      label="Gender"
+                      variant="outlined"
+                    />
                   )}
-                  
                 />
               </Grid>
             </Grid>
             {/* <input type="file" onChange={onFileChange} />  */}
-            <h3>Photo Upload: &nbsp;&nbsp;&nbsp;&nbsp;
-            <input
-        accept="image/*"
-        className={classes.input}
-        id="contained-button-file"
-        multiple
-        type="file"
-        onChange={onFileChange}
-      />
-      <label htmlFor="contained-button-file">
-        <Button variant="contained" color="primary" component="span">
-          Upload
-        </Button>
-      </label></h3>
+            <h3>
+              Photo Upload: &nbsp;&nbsp;&nbsp;&nbsp;
+              <input
+                accept="image/*"
+                className={classes.input}
+                id="contained-button-file"
+                multiple
+                type="file"
+                onChange={onFileChange}
+              />
+              <label htmlFor="contained-button-file">
+                <Button variant="contained" color="primary" component="span">
+                  Upload
+                </Button>
+              </label>
+            </h3>
+            {pError.error && (
+              <p style={{ color: "red" }}>{pError.helperText}</p>
+            )}
             <Button
               type="submit"
               fullWidth

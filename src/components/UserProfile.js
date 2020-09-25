@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: "url(https://source.unsplash.com/random)",
     //backgroundColor : 'black',
     //backgroundRepeat: "no-repeat",
-    //backgroundSize: 'auto',
+    backgroundSize: '100%',
     height: "100vh",
     alignItems: "center",
     justifyContent: "center"
@@ -124,6 +124,7 @@ export default function Sign({match}) {
             User Details
           </Typography>
         <h1>No user with the given username found</h1>
+        <Button variant="contained" color="primary" onClick={()=>{history.push('/create')}}>Return Home</Button>
         </div>
         </Grid>
       </Grid>}

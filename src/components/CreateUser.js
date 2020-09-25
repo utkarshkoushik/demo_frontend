@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   image: {
     backgroundImage: "url(https://source.unsplash.com/random)",
+    backgroundSize: '100%',
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -49,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+  },
+  input: {
+    display: 'none',
   },
 }));
 
@@ -340,7 +344,21 @@ console.log(gender)
                 />
               </Grid>
             </Grid>
-            <input type="file" onChange={onFileChange} /> 
+            {/* <input type="file" onChange={onFileChange} />  */}
+            <h3>Photo Upload: &nbsp;&nbsp;&nbsp;&nbsp;
+            <input
+        accept="image/*"
+        className={classes.input}
+        id="contained-button-file"
+        multiple
+        type="file"
+        onChange={onFileChange}
+      />
+      <label htmlFor="contained-button-file">
+        <Button variant="contained" color="primary" component="span">
+          Upload
+        </Button>
+      </label></h3>
             <Button
               type="submit"
               fullWidth
@@ -349,7 +367,7 @@ console.log(gender)
               className={classes.submit}
               onClick={handleSubmit}
             >
-              Sign In
+              Register
             </Button>
           </form>
         </div>

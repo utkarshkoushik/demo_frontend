@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   image: {
     backgroundImage: "url(https://source.unsplash.com/random)",
     backgroundSize: "100%",
+    backgroundSize: 'cover',
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundPosition: "center",
   },
   paper: {
-    margin: theme.spacing(8, 4),
+    margin: theme.spacing(2, 4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -89,10 +90,7 @@ export default function SignInSide() {
     error: false,
     helperText: "",
   });
-  useEffect(() => {
-    console.log(gender);
-  }, [gender]);
-
+  const [preview,setPreview] = useState();
   const handleFirstName = (event) => {
     setFirstName({
       value: event.target.value,
@@ -172,7 +170,15 @@ export default function SignInSide() {
         console.log(err);
       });
   };
-
+  useEffect(()=>{
+    if(!photo){
+      setPreview("")
+    }
+    else{
+    const objectUrl = URL.createObjectURL(photo)
+    setPreview(objectUrl)
+    }
+  },[photo])
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!firstName.value) {
@@ -248,15 +254,41 @@ export default function SignInSide() {
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
+          {/* <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
+          </Avatar> */}
+          <Typography component="h1" variant="h5" style={{marginBottom : "10px"}}>
             Enter Your Details
           </Typography>
+          <img
+                src={preview || 'https://www.computerhope.com/jargon/g/guest-user.jpg'}
+                style={{
+                  height: "150px",
+                  width: "150px",
+                  borderRadius: "100%",
+                  marginBottom : "15px"
+                }}
+              ></img>
+          <input
+                accept="image/*"
+                className={classes.input}
+                id="contained-button-file"
+                multiple
+                type="file"
+                onChange={onFileChange}
+              />
+              <label htmlFor="contained-button-file">
+                <Button variant="contained" color={pError.error?"secondary" : "primary"} component="span">
+                  Upload
+                </Button>
+              </label>
+              {pError.error && (
+              <p style={{ color: "red" }}>{pError.helperText}</p>
+            )}
           <form className={classes.form} noValidate>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
+                
                 <TextField
                   error={firstName.error}
                   variant="outlined"
@@ -358,24 +390,7 @@ export default function SignInSide() {
               </Grid>
             </Grid>
             <h3>
-              Photo Upload: &nbsp;&nbsp;&nbsp;&nbsp;
-              <input
-                accept="image/*"
-                className={classes.input}
-                id="contained-button-file"
-                multiple
-                type="file"
-                onChange={onFileChange}
-              />
-              <label htmlFor="contained-button-file">
-                <Button variant="contained" color="primary" component="span">
-                  Upload
-                </Button>
-              </label>
             </h3>
-            {pError.error && (
-              <p style={{ color: "red" }}>{pError.helperText}</p>
-            )}
             <Button
               type="submit"
               fullWidth

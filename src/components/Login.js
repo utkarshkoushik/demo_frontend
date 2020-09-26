@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -39,6 +39,11 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn() {
   const classes = useStyles();
   const history = useHistory();
+  useEffect(()=>{
+    if(localStorage.getItem("token")){
+      history.push('/create');
+    }
+  },[])
   const [email,setEmail] = useState({
     value : "",
     error : false,
@@ -82,12 +87,19 @@ export default function SignIn() {
         })
     }
     if(email.value && password.value){
-        if(email.value=='admin' && password.value=='admin'){
-            history.push('/');
-        }
-        else {
-            alert('Enter a valid email and password');
-        }
+        axios.post('http://13.235.80.12:8000/api-token-auth/',{
+          username : email.value,
+          password : password.value
+        })
+        .then((res)=>{
+          console.log(res.data.token);
+          localStorage.setItem("token",res.data.token);
+          history.push('/');
+        })
+        .catch((err)=>{
+          console.log(err);
+          alert('Enter a valid email and password');
+        })
         
     }
   }
@@ -108,10 +120,10 @@ export default function SignIn() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Username"
+            name="Username"
+            autoComplete="Username"
             autoFocus
             error = {email.error}
             onChange = {hadnleEmail}
@@ -131,10 +143,6 @@ export default function SignIn() {
             onChange = {handlePassword}
             helperText={password.helperText}
           />
-          {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
           <Button
             type="submit"
             fullWidth
@@ -146,18 +154,6 @@ export default function SignIn() {
           >
             Sign In
           </Button>
-          {/* <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid> */}
         </form>
       </div>
       <Box mt={8}>

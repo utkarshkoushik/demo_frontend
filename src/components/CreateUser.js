@@ -17,6 +17,7 @@ const options = ["Male", "Female"];
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
+    
   },
   image: {
     backgroundImage: "url(https://source.unsplash.com/random)",
@@ -53,8 +54,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignInSide() {
-  const classes = useStyles();
   const history = useHistory();
+  useEffect(()=>{
+    if(!localStorage.getItem("token")){
+      history.push('/login');
+    }
+  },[])
+
+  const classes = useStyles();
+  
   const [firstName, setFirstName] = useState({
     value: "",
     error: false,
@@ -143,8 +151,16 @@ export default function SignInSide() {
     formData.append("age", age.value);
     formData.append("gender", gender.value);
     formData.append("photo", photo, photo.name);
-    axios
-      .post("http://13.235.80.12:8000/api/userData", formData)
+    var token = localStorage.getItem('token');
+    console.log(token);
+    axios({
+      method : 'post',
+      url : "http://13.235.80.12:8000/api/userData",
+      data : formData,
+      headers: {
+        Authorization: 'Token ' + token
+      }
+      })
       .then((res) => {
         console.log(res);
         if (res.data.msg1 == "Username already taken") {
@@ -249,16 +265,16 @@ export default function SignInSide() {
     }
   };
   return (
+    <div>
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
-          {/* <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar> */}
           <Typography component="h1" variant="h5" style={{marginBottom : "10px"}}>
-            Enter Your Details
+            Enter Your Details &nbsp;&nbsp;&nbsp;&nbsp;
+            <Button variant="contained"
+            color="secondary" onClick={()=>{localStorage.clear();history.push('/login')}}>Logout</Button>
           </Typography>
           <img
                 src={preview || 'https://www.computerhope.com/jargon/g/guest-user.jpg'}
@@ -405,5 +421,6 @@ export default function SignInSide() {
         </div>
       </Grid>
     </Grid>
+    </div>
   );
 }

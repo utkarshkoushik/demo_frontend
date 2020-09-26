@@ -146,7 +146,7 @@ export default function SignInSide() {
     formData.append("gender", gender.value);
     formData.append("photo", photo, photo.name);
     axios
-      .post("http://13.233.193.134:8000/api/userData", formData)
+      .post("http://13.235.80.12:8000/api/userData", formData)
       .then((res) => {
         console.log(res);
         if (res.data.msg1 == "Username already taken") {

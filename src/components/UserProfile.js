@@ -55,7 +55,7 @@ export default function Sign({ match }) {
       history.push("/create");
     } else {
       axios
-        .get(`http://13.233.193.134:8000/api/userData/${match.params.id}`)
+        .get(`http://13.235.80.12:8000/api/userData/${match.params.id}`)
         .then((response) => {
           console.log(response);
           setRes(response.data);
@@ -84,7 +84,7 @@ export default function Sign({ match }) {
           >
             <div className={classes.paper}>
               <img
-                src={"http://13.233.193.134:8000" + res.photo}
+                src={"http://13.235.80.12:8000" + res.photo}
                 style={{
                   height: "150px",
                   width: "150px",
